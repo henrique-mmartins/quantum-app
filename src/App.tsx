@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import './App.css';
-import Matrix from "./component/Matrix";
-import BarChart from "./component/BarChart";
+import Matrix from './component/Matrix';
+import BarChart from './component/BarChart';
+import Header from './component/Header';
 
 function App() {
 
@@ -9,8 +10,10 @@ function App() {
 
   return (
     <div className="App">
+      <Header/>
       <Matrix sequenceResult={(d=> setData(d))}/>
       <BarChart dataSet={data}/>
+
     </div>
   );
 }

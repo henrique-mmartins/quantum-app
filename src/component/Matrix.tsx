@@ -1,9 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {makeStyles} from "@material-ui/core/styles";
-import {Gate} from "./types";
-import {calculateEmulation} from "./Service";
+import React, {useState} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
+import {Gate} from './types';
+import {calculateEmulation} from './Service';
+import {Card, CardHeader} from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 
-const useStyle = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  outerPaper: {
+    margin: theme.spacing(4),
+  },
+  cardHeader: {
+    textAlign: 'left',
+  },
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -45,14 +53,14 @@ const useStyle = makeStyles({
     },
   },
 
-});
+}));
 
 interface MatrixProps {
   sequenceResult: (x: any) => void;
 }
 
 function Matrix(props: MatrixProps) {
-  const classes = useStyle();
+  const classes = useStyles();
   const [sequence, setSequence] = useState<Gate[]>([]);
   const {sequenceResult} = props;
 
@@ -75,6 +83,7 @@ function Matrix(props: MatrixProps) {
     const copy = [...sequence];
     copy.splice(index, 1)
     setSequence(copy);
+    compute(copy);
   }
 
   const createBlock = (x: Gate, index: number) => (
@@ -91,20 +100,25 @@ function Matrix(props: MatrixProps) {
   }
 
   return (
-    <div className={classes.root}>
-      <div className={classes.row}>
-        <label className={classes.label}>functions</label>
+    <Card className={classes.outerPaper}>
+
+      <CardHeader className={classes.cardHeader} title="Circuits" />
+      <Divider />
+      <div className={classes.root}>
         <div className={classes.row}>
-          {Object.keys(Gate).filter(k => typeof Gate[k as any] === "number").map(key => createOptions(key))}
+          <label className={classes.label}>Gates</label>
+          <div className={classes.row}>
+            {Object.keys(Gate).filter(k => typeof Gate[k as any] === "number").map(key => createOptions(key))}
+          </div>
+        </div>
+        <div className={classes.row}>
+          <label className={classes.label}>Circuit</label>
+          <div className={classes.row}>
+            {sequence.map((gate, index) => createBlock(gate, index))}
+          </div>
         </div>
       </div>
-      <div className={classes.row}>
-        <label className={classes.label}>sequence</label>
-        <div className={classes.row}>
-          {sequence.map((gate, index) => createBlock(gate, index))}
-        </div>
-      </div>
-    </div>
+    </Card>
   );
 }
 

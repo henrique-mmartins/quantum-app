@@ -1,18 +1,27 @@
 import React from 'react';
 import {Bar} from 'react-chartjs-2';
-import {makeStyles} from "@material-ui/core/styles";
-import {GateResult} from "./types";
+import {makeStyles} from '@material-ui/core/styles';
+import {GateResult} from './types';
+import Card from '@material-ui/core/Card';
+import {CardHeader} from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 
-const useStyle = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  outerPaper: {
+    margin: theme.spacing(4),
+  },
+  cardHeader: {
+    textAlign: 'left',
+  },
   root: {
     display: 'flex',
     flexDirection: 'row',
-    width: '500px',
+    margin: theme.spacing(2),
   },
   label: {
     width: '100px',
   },
-});
+}));
 
 interface BarChartProps {
   dataSet: any[]
@@ -45,7 +54,7 @@ const colorsHighlight = [
 
 
 function BarChart(props: BarChartProps) {
-  const classes = useStyle();
+  const classes = useStyles();
   const {dataSet} = props;
 
   const computeDate = (data: GateResult[]) => {
@@ -70,34 +79,24 @@ function BarChart(props: BarChartProps) {
     return dataSet;
   }
 
-  let testData: GateResult[] = [
-    {"zero": "0.01", "one": "0.01"},
-    {"zero": "0.71", "one": "0.71"},
-    {"zero": "0.31", "one": "0.51"},
-    {"zero": "0.81", "one": "0.21"},
-    {"zero": "0.11", "one": "0.51"},
-    {"zero": "0.51", "one": "0.21"},
-    {"zero": "0.51", "one": "0.91"},
-    {"zero": "0.81", "one": "0.21"},
-    {"zero": "0.81", "one": "0.21"},
-    {"zero": "0.81", "one": "0.21"},
-    {"zero": "0.91", "one": "0.1"},
-  ];
-
   return (
-    <div className={classes.root}>
-      <label className={classes.label}>Result</label>
-      <div>
-        <Bar
-          data={computeDate(testData)} width={400} height={200}
-          options={{
-            maintainAspectRatio: false,
-            legend: {position: 'bottom'},
-            scales: {yAxes: [{ticks: {min: 0}}]}
-          }}
-        />
+    <Card className={classes.outerPaper}>
+      <CardHeader className={classes.cardHeader} title="Result" />
+      <Divider />
+      <div className={classes.root}>
+        <div>
+          <Bar
+            data={computeDate(dataSet)} width={800} height={400}
+            options={{
+              maintainAspectRatio: false,
+              legend: {position: 'bottom'},
+              scales: {yAxes: [{ticks: {min: 0}}]}
+            }}
+
+          />
+        </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

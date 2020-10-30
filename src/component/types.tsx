@@ -1,14 +1,10 @@
 export enum Gate {
-  CNOT,
-  Fourier,
+  C,
   H,
-  Measure,
   X,
   Y,
   Z,
-  Phase,
-  SqrtNOT,
-  SWAP,
+  M,
 }
 
 export interface GateResult {
